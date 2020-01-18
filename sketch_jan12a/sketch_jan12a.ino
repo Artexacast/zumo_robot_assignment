@@ -32,7 +32,7 @@ void loop() {
             delay(500);
             forward();
           }
-
+        
           buttonPress = inChar;
           if(buttonPress && inChar=='s') {
             delay(500);
