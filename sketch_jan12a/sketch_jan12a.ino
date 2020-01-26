@@ -11,9 +11,9 @@ Zumo32U4LineSensors lineSensors;
 
 int16_t lastError = 0;
 
-//uint16_t lineSensorValues[5] = { 0, 0, 0, 0, 0 };
-#define NUM_SENSORS 3
-unsigned int lineSensorValues[NUM_SENSORS];
+uint16_t lineSensorValues[5] = { 0, 0, 0, 0, 0 };
+//#define NUM_SENSORS 5
+//unsigned int lineSensorValues[NUM_SENSORS];
 
 bool proximityLeft;
 bool proximityRight;
@@ -25,13 +25,13 @@ int turnSpeed = 200;
 
 void setup() {
   // put your setup code here, to run once:
-  lineSensors.initThreeSensors();
+  lineSensors.initFiveSensors();
   proximitySensors.initThreeSensors();
  
   Serial.begin(9600);
   Serial1.begin(9600);
   Keyboard.begin();
-  zumocalibrateLineSensors();
+ // zumocalibrateLineSensors();
 }
 
 void zumocalibrateLineSensors(){
@@ -56,7 +56,7 @@ void zumocalibrateLineSensors(){
 void forward(){
   delay(1000);
   motors.setSpeeds(motorsSpeed, motorsSpeed);
-  Serial.write("Here2");
+  //Serial.write("Here2");
 }
 
 void stopMotor(){
@@ -80,36 +80,51 @@ void right(){
 }
 
 void reverse(){
-        delay(1000);
-        motors.setSpeeds(-500, -500);
+       
+        motors.setSpeeds(-75, -75);
         Serial.write("Here2");
-        delay(3000);
+        delay(1000);
         stopMotor();
 }
 
 void loop() {
-  Serial.println("Left");
-  Serial.println(lineSensors.readLine(lineSensorValues[0]));
-   Serial.println("Middle");
-   Serial.println(lineSensors.readLine(lineSensorValues[1]));
-   Serial.println("Right");
-   Serial.println(lineSensors.readLine(lineSensorValues[2]));
 
-  int16_t position = lineSensors.readLine(lineSensorValues);
-  lineSensors.readLine(lineSensorValues);
+  lineSensors.read(lineSensorValues);
+  //zumocalibrateLineSensors();
+//  Serial.println("Left");
+//  Serial.println(lineSensors.readLine(lineSensorValues[0]));
+//  Serial.println("Middle");
+//   Serial.println(lineSensors.readLine(lineSensorValues[1]));
+//   Serial.println("Right");
+//   Serial.println(lineSensors.readLine(lineSensorValues[2]));
 
-  if (lineSensorValues[NUM_SENSORS-0] > 900){
+  int16_t position = lineSensors.readLine(lineSensorValues[0]);
+ // 
+ // Serial.println(position);
+//Serial.println(lineSensorValues[0]);
+  if (lineSensorValues[0] < 150){
     motors.setSpeeds(motorsSpeed, -motorsSpeed);
     delay(50);
     forward();
-     Serial1.println("Left" + lineSensorValues[0]);
+     Serial.println("Left");
+     Serial.println(lineSensorValues[0]);
   }
 
-  else if (lineSensorValues[NUM_SENSORS-2] > 1900){
+  else if (lineSensorValues[4] < 90){
     motors.setSpeeds(-motorsSpeed, motorsSpeed);
     delay(50);
     forward();
-    Serial1.println(lineSensorValues[NUM_SENSORS-1]);
+    Serial.println("Right");
+    Serial.println(lineSensorValues[2]);
+  }
+
+   else if (lineSensorValues[2] > 1000){
+   // motors.setSpeeds(-motorsSpeed, motorsSpeed);
+   // delay(50);
+    reverse();
+ //   delay(50);
+    Serial.println("Reverse");
+    Serial.println(lineSensorValues[2]);
   }
    else{
     motors.setSpeeds(motorsSpeed, motorsSpeed);
