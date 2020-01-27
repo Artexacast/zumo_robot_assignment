@@ -85,9 +85,18 @@ void left(){
         delay(1000);
         motors.setSpeeds(-100, 100);
         Serial.write("Here2");
-        delay(1100);
+        delay(950);
         stopMotor();
        // automation();
+}
+
+void oneEighty(){
+  //stopMotor();
+      motors.setSpeeds(-100, 100);
+        Serial.write("Here2");
+        delay(2200);
+        stopMotor();
+     // automation;
 }
 
 void right(){
@@ -134,7 +143,8 @@ void automation(){
   
      else if (lineSensorValues[2] > 400){
       stopMotor();
-      //reverse();
+      reverse();
+      stopMotor();
 //      Serial.println("Reverse");
 //      Serial.println(lineSensorValues[2]);
     }
@@ -191,6 +201,11 @@ void loop() {
           if(inChar=='3') {
             delay(500);
             right();
+          }
+
+          if(inChar=='8') {
+          //  delay(500);
+            oneEighty();
           }
 
           //buttonPress = inChar;
