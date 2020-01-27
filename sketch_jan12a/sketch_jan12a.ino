@@ -45,7 +45,7 @@ void zumocalibrateLineSensors(){
     {
       motors.setSpeeds(200, -200);
     }
-
+    
     lineSensors.calibrate();
   }
   motors.setSpeeds(0, 0);
@@ -126,22 +126,24 @@ void automation(){
       motors.setSpeeds(motorsSpeed, motorsSpeed);
     }
 }
-void loop() {
 
+void loop() {
   lineSensors.read(lineSensorValues);
-  //   if (Serial1.available()) {
-    //  Serial1.println("We.re in");
-       // Serial1.write("Button Pressed");
-        // read incoming serial data:
-        String inChar = Serial1.readString();
-      //  room();
-       // Serial1.write(inChar);
+  //int inChar = Serial1.read();
+  //Serial.println(inChar);
+     if (Serial1.available()) {
+      //Serial1.write('w');
+        char inChar = Serial1.read();
+        Serial.println(inChar);
+//        Serial.println("In the loop");
+//      //  room();
+//        Serial1.println(inChar);
 //        bool buttonPress = inChar;
 //          if(buttonPress && inChar=='a') {
 //            delay(500);
 //            forward();
 //          }
-//      
+//          
 //          buttonPress = inChar;
 //          if(buttonPress && inChar=='s') {
 //            delay(500);
@@ -161,12 +163,14 @@ void loop() {
 //          }
 
           //buttonPress = inChar;
-          Serial.println("Testing");
-          Serial.print(inChar);
-          if(inChar=="1") {
+      //    Serial1.println("Testing");
+      //    Serial.print(inChar);
+          if(inChar == '1') {
+            Serial1.println("We got here");
+            Serial.println("We got here");
             delay(500);
             Serial1.write("Reversed");
             reverse();
           }
-//if atatement   }
+   }
 }
