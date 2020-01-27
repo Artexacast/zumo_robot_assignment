@@ -53,6 +53,19 @@ void zumocalibrateLineSensors(){
   delay(5000);
 }
 
+void room(){
+  proximitySensors.read();
+
+  int sensorOne = proximitySensors.countsFrontWithLeftLeds();
+  int sensorTwo = proximitySensors.countsFrontWithRightLeds();
+  
+  if(sensorOne && sensorTwo < 4 ){
+    Serial.println("Object detected");
+  }
+  Serial.println(sensorOne);
+  Serial.println("Prox sensor one");
+}
+
 void forward(){
   delay(1000);
   motors.setSpeeds(motorsSpeed, motorsSpeed);
@@ -81,81 +94,58 @@ void right(){
 
 void reverse(){
        
-        motors.setSpeeds(-75, -75);
-        Serial.write("Here2");
+        motors.setSpeeds(100, 100);
+     //   Serial.write("Here2");
         delay(1000);
         stopMotor();
 }
 
+void automation(){
+  
+    if (lineSensorValues[0] < 150){
+      motors.setSpeeds(motorsSpeed, -motorsSpeed);
+      delay(50);
+      forward();
+       Serial.println("Left");
+       Serial.println(lineSensorValues[0]);
+    }
+  
+    else if (lineSensorValues[4] < 90){
+      motors.setSpeeds(-motorsSpeed, motorsSpeed);
+      delay(50);
+      forward();
+      Serial.println("Right");
+      Serial.println(lineSensorValues[2]);
+    }
+  
+     else if (lineSensorValues[2] > 1000){
+      reverse();
+      Serial.println("Reverse");
+      Serial.println(lineSensorValues[2]);
+    }
+     else{
+      motors.setSpeeds(motorsSpeed, motorsSpeed);
+    }
+}
 void loop() {
 
   lineSensors.read(lineSensorValues);
-  //zumocalibrateLineSensors();
-//  Serial.println("Left");
-//  Serial.println(lineSensors.readLine(lineSensorValues[0]));
-//  Serial.println("Middle");
-//   Serial.println(lineSensors.readLine(lineSensorValues[1]));
-//   Serial.println("Right");
-//   Serial.println(lineSensors.readLine(lineSensorValues[2]));
-
-  int16_t position = lineSensors.readLine(lineSensorValues[0]);
- // 
- // Serial.println(position);
-//Serial.println(lineSensorValues[0]);
-  if (lineSensorValues[0] < 150){
-    motors.setSpeeds(motorsSpeed, -motorsSpeed);
-    delay(50);
-    forward();
-     Serial.println("Left");
-     Serial.println(lineSensorValues[0]);
-  }
-
-  else if (lineSensorValues[4] < 90){
-    motors.setSpeeds(-motorsSpeed, motorsSpeed);
-    delay(50);
-    forward();
-    Serial.println("Right");
-    Serial.println(lineSensorValues[2]);
-  }
-
-   else if (lineSensorValues[2] > 1000){
-   // motors.setSpeeds(-motorsSpeed, motorsSpeed);
-   // delay(50);
-    reverse();
- //   delay(50);
-    Serial.println("Reverse");
-    Serial.println(lineSensorValues[2]);
-  }
-   else{
-    motors.setSpeeds(motorsSpeed, motorsSpeed);
-  }
-//  int16_t error = position;
-//
-//  int16_t speedDifference = error / 4 + 6 * (error - lastError);
-//
-//  lastError = error;
-//
-//  int16_t leftSpeed = (int16_t)motorsSpeed + speedDifference;
-//  int16_t rightSpeed = (int16_t)motorsSpeed - speedDifference;
-//  
-//  leftSpeed = constrain(leftSpeed, 0, (int16_t)motorsSpeed);
-//  rightSpeed = constrain(rightSpeed, 0, (int16_t)motorsSpeed);
- 
-  //motors.setSpeeds(leftSpeed, rightSpeed);
-//    // put your main code here, to run repeatedly:
-//    
-//    // check for incoming serial data:
-//     if (Serial.available() > 0) {
-//        
-//        // read incoming serial data:
-//        char inChar = Serial.read();
-//
+  //   if (Serial1.available()) {
+    //  Serial1.println("We.re in");
+       // Serial1.write("Button Pressed");
+        // read incoming serial data:
+        char inChar = Serial1.read();
+       // Serial1.println("Char in");
+//       Serial1.println("Pressed");
+//        Serial1.println(inChar);
+//        Serial.println(inChar);
+        room();
 //        bool buttonPress = inChar;
-//          if(buttonPress && inChar=='w') {
+//          if(buttonPress && inChar=='a') {
 //            delay(500);
 //            forward();
 //          }
-//        
+//      
 //          buttonPress = inChar;
 //          if(buttonPress && inChar=='s') {
 //            delay(500);
@@ -163,7 +153,7 @@ void loop() {
 //          }
 //
 //          buttonPress = inChar;
-//          if(buttonPress && inChar=='a') {
+//          if(buttonPress && inChar=='l') {
 //            delay(500);
 //            left();
 //          }
@@ -173,11 +163,13 @@ void loop() {
 //            delay(500);
 //            right();
 //          }
-//
-//          buttonPress = inChar;
-//          if(buttonPress && inChar=='r') {
-//            delay(500);
-//            reverse();
-//          }
-//   }
+
+          //buttonPress = inChar;
+          if(inChar=="1") {
+            
+            delay(500);
+            Serial1.write("Reversed");
+            reverse();
+          }
+//if atatement   }
 }
