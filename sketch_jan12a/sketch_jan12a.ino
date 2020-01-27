@@ -8,7 +8,6 @@ Zumo32U4Motors motors;
 Zumo32U4ProximitySensors proximitySensors;
 Zumo32U4LineSensors lineSensors;
 
-
 int16_t lastError = 0;
 
 uint16_t lineSensorValues[5] = { 0, 0, 0, 0, 0 };
@@ -62,8 +61,8 @@ void room(){
   if(sensorOne && sensorTwo < 4 ){
     Serial.println("Object detected");
   }
-  Serial.println(sensorOne);
-  Serial.println("Prox sensor one");
+//  Serial.println(sensorOne);
+//  Serial.println("Prox sensor one");
 }
 
 void forward(){
@@ -134,12 +133,9 @@ void loop() {
     //  Serial1.println("We.re in");
        // Serial1.write("Button Pressed");
         // read incoming serial data:
-        char inChar = Serial1.read();
-       // Serial1.println("Char in");
-//       Serial1.println("Pressed");
-//        Serial1.println(inChar);
-//        Serial.println(inChar);
-        room();
+        String inChar = Serial1.readString();
+      //  room();
+       // Serial1.write(inChar);
 //        bool buttonPress = inChar;
 //          if(buttonPress && inChar=='a') {
 //            delay(500);
@@ -165,8 +161,9 @@ void loop() {
 //          }
 
           //buttonPress = inChar;
+          Serial.println("Testing");
+          Serial.print(inChar);
           if(inChar=="1") {
-            
             delay(500);
             Serial1.write("Reversed");
             reverse();
