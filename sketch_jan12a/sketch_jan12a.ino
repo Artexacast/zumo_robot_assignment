@@ -36,7 +36,7 @@ void room(){
   //read values of proximity sensors
   int sensorOne = proximitySensors.countsFrontWithLeftLeds();
   int sensorTwo = proximitySensors.countsFrontWithRightLeds();
-  Serial.println(sensorOne);
+ 
   if(sensorOne > 5 ){
     //if values are greater than 5, play a sound
     Serial.println("Object detected");
@@ -46,7 +46,7 @@ void room(){
   stopMotor();
 }
 
-//functions for movement
+//Functions for movement
 
 void forward(){
   delay(1000);
@@ -99,23 +99,26 @@ void automation(){
 
   //check values of all line sensors and use functions accordingly
   
+    //left line sensor
     if (lineSensorValues[0] > 450){
       motors.setSpeeds(motorsSpeed, motorsSpeed-50);
       delay(50);
       automation();
     }
-  
+    ]//right line sensor
     else if (lineSensorValues[4] > 400){
       motors.setSpeeds(motorsSpeed-50, motorsSpeed);
       delay(50);
       forward();
     }
-  
-     else if (lineSensorValues[2] > 400){
+
+    //middle sensor
+    else if (lineSensorValues[2] > 400){
       stopMotor();
       reverse();
       stopMotor();
     }
+   //if no sensors triggered, just move forward
      else{
       motors.setSpeeds(motorsSpeed, motorsSpeed);
     }
@@ -123,6 +126,7 @@ void automation(){
 
 void loop() {
   lineSensors.read(lineSensorValues);
+  automation();
      if (Serial1.available()) {
         char inChar = Serial1.read();
         Serial.println(inChar);
